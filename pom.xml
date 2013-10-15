@@ -39,8 +39,12 @@
 			<artifactId>titan-core</artifactId>
 			<version>0.3.2</version>
 		</dependency>
-
-
+		<dependency>
+			<groupId>com.thinkaurelius.titan</groupId>
+			<artifactId>titan-cassandra</artifactId>
+			<version>0.3.2</version>
+		</dependency>
+		
 		<!-- Dependencies for testing -->
 		<dependency>
 			<groupId>junit</groupId>
