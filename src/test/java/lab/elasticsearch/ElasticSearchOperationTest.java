@@ -3,14 +3,10 @@ package lab.elasticsearch;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-import io.searchbox.client.JestClient;
-import io.searchbox.client.JestClientFactory;
 import io.searchbox.client.JestResult;
-import io.searchbox.client.config.ClientConfig;
 import io.searchbox.core.Get;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
-import io.searchbox.indices.CreateIndex;
 import io.searchbox.indices.DeleteIndex;
 
 import java.util.List;
@@ -18,21 +14,10 @@ import java.util.List;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
-public class ElasticSearchOperationTest {
-  private static final String INDEX = "test-index";
-  private static final String TYPE = "type";
-  private final String ip = "10.101.30.96:9200";
-  private ClientConfig config = new ClientConfig.Builder("http://" + ip).multiThreaded(true).build();
-  private JestClient client;
-
-  @Before
-  public void before() throws Exception {
-    this.client = client();
-    client.execute(new CreateIndex.Builder(INDEX).build());
-  }
+public class ElasticSearchOperationTest extends AbstractElasticSearchTest {
+  static final String TYPE = "operation";
 
   @Test
   public void addDocument() throws Exception {
@@ -76,7 +61,7 @@ public class ElasticSearchOperationTest {
 
   @After
   public void after() throws Exception {
-    client.execute(new DeleteIndex.Builder(INDEX).build());
+    client.execute(new DeleteIndex.Builder(INDEX).type(TYPE).build());
   }
 
   private User create(String id, String name) {
@@ -84,11 +69,5 @@ public class ElasticSearchOperationTest {
     result.setId(id);
     result.setName(name);
     return result;
-  }
-
-  private JestClient client() {
-    JestClientFactory factory = new JestClientFactory();
-    factory.setClientConfig(config);
-    return factory.getObject();
   }
 }
