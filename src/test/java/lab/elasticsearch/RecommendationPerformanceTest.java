@@ -20,7 +20,7 @@ import org.junit.Test;
 
 import com.google.common.base.Stopwatch;
 
-public class ElasticRecommendationPerformanceTest extends AbstractElasticSearchTest {
+public class RecommendationPerformanceTest extends AbstractElasticSearchTest {
   static final String TYPE = "recomm";
   final int userCount = 500000;
   final int musicCount = 50000;

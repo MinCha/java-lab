@@ -16,7 +16,7 @@ import org.junit.Test;
 
 import com.google.common.base.Stopwatch;
 
-public class ElasticFullTextSearchPerformanceTest extends AbstractElasticSearchTest {
+public class FullTextSearchPerformanceTest extends AbstractElasticSearchTest {
   static final String TYPE = "fulltext";
 
   @Test
