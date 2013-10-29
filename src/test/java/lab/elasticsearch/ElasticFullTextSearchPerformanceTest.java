@@ -12,21 +12,18 @@ import java.util.List;
 
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.common.base.Stopwatch;
 
 public class ElasticFullTextSearchPerformanceTest extends AbstractElasticSearchTest {
-  static final String TYPE = "fulltext-performance";
+  static final String TYPE = "fulltext";
 
-  @Ignore
   @Test
   public void createMusic() throws Exception {
     createMusic(1000000);
   }
 
-  @Ignore
   @Test
   public void removeMusic() throws Exception {
     client.execute(new DeleteIndex.Builder(INDEX).type(TYPE).build());
@@ -46,7 +43,7 @@ public class ElasticFullTextSearchPerformanceTest extends AbstractElasticSearchT
 
   private void createMusic(int count) throws Exception {
     long start = System.currentTimeMillis();
-    List<String> word = Arrays.asList("하늘", "바람", "진실", "우정", "변화", "창공", "작곡", "예술", "인간의 삶");
+    List<String> word = Arrays.asList("とましま", "いにすなす", "しとまのし", "ててらにらにい", "シノイラス", "イラハノ", "タテイスカ", "チトシハキ", "ツサソヒコ");
     Builder builder = builder();
     for (int i = 0; i < count; i++) {
       if (i % 2000 == 0) {

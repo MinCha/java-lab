@@ -3,22 +3,22 @@ package lab.elasticsearch;
 import lab.BaseObject;
 
 public class MusicPlayLog extends BaseObject {
-  private String userId;
-  private String musicId;
+  private int userId;
+  private int musicId;
 
-  public String getUserId() {
+  public int getUserId() {
     return userId;
   }
 
-  public void setUserId(String userId) {
+  public void setUserId(int userId) {
     this.userId = userId;
   }
 
-  public String getMusicId() {
+  public int getMusicId() {
     return musicId;
   }
 
-  public void setMusicId(String musicId) {
+  public void setMusicId(int musicId) {
     this.musicId = musicId;
   }
 }

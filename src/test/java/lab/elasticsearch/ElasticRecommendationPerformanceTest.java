@@ -9,7 +9,6 @@ import io.searchbox.core.search.facet.TermsFacet;
 import io.searchbox.indices.DeleteIndex;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -22,8 +21,7 @@ import org.junit.Test;
 import com.google.common.base.Stopwatch;
 
 public class ElasticRecommendationPerformanceTest extends AbstractElasticSearchTest {
-  static final String TYPE = "recommandation-musiclog";
-  private List<String> word = Arrays.asList("하늘", "바람", "진실", "우정", "변화", "창공", "작곡", "예술", "인간의 삶");
+  static final String TYPE = "recomm";
   final int userCount = 500000;
   final int musicCount = 50000;
 
@@ -34,7 +32,6 @@ public class ElasticRecommendationPerformanceTest extends AbstractElasticSearchT
     createMusicLog(userCount, musicCount);
   }
 
-  @Ignore
   @Test
   public void remove() throws Exception {
     client.execute(new DeleteIndex.Builder(INDEX).type("recommandation-musiclog").build());
@@ -110,8 +107,8 @@ public class ElasticRecommendationPerformanceTest extends AbstractElasticSearchT
         System.out.println("Music " + i + " " + ((System.currentTimeMillis() - start) / 1000));
       }
       MusicPlayLog log = new MusicPlayLog();
-      log.setUserId(String.valueOf(new Random().nextInt(userCount)));
-      log.setMusicId(String.valueOf(new Random().nextInt(musicCount)));
+      log.setUserId(new Random().nextInt(userCount));
+      log.setMusicId(new Random().nextInt(musicCount));
       builder.addAction(new Index.Builder(log).index(INDEX).type(TYPE).build());
     }
 
