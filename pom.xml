@@ -7,6 +7,10 @@
 	<version>0.1</version>
 	<name>lab</name>
 	<packaging>jar</packaging>
+	
+	<properties>
+		<downloadSources>true</downloadSources>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -49,7 +53,11 @@
 		  <artifactId>jest</artifactId>
 		  <version>0.0.4</version>
 		</dependency>
-		
+		<dependency>
+			<groupId>org.apache.mahout</groupId>
+			<artifactId>mahout-core</artifactId>
+			<version>0.8</version>
+		</dependency>
 		<!-- Dependencies for testing -->
 		<dependency>
 			<groupId>junit</groupId>
