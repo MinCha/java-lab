@@ -1,0 +1,20 @@
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.1.1//EN"
+"http://www.opensymphony.com/xwork/xwork-1.1.1.dtd">
+
+<xwork>
+	<include file="webwork-default.xml" />
+
+	<!-- Configuration for the default package. -->
+	<package name="default" extends="webwork-default">
+		<default-interceptor-ref name="basicStack"></default-interceptor-ref>		
+	
+		<action name="Hello"
+			class="com.googlecode.goodsamples.xwork.HelloWorldAction">
+			<result name="success">/hello.jsp</result>
+		</action>
+		<action name="MemoList"
+			class="com.googlecode.goodsamples.xwork.MemoListAction">
+			<result name="success">/memolist.jsp</result>
+		</action>
+	</package>
+</xwork>

@@ -7,7 +7,7 @@
 	<version>0.1</version>
 	<name>lab</name>
 	<packaging>jar</packaging>
-	
+
 	<properties>
 		<downloadSources>true</downloadSources>
 	</properties>

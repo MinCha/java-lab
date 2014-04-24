@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+    	http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+	<!-- 
+		Our filters should be applied to only secured URLs.
+		Assume that our service does not use session.
+		If there is no pre-authenticated principal, returns 503 after throwing UserNameNotFoundException.
+		
+		ex) /secured/home   
+	 -->
+	<security:http pattern="/secured/**" entry-point-ref="http403EntryPoint" create-session="stateless">
+		<security:custom-filter ref="exceptionTranslationFilter"
+			before="PRE_AUTH_FILTER" />
+		<security:custom-filter ref="preAuthenticatedProcessingFilter"
+			position="PRE_AUTH_FILTER" />
+	</security:http>
+	<!-- 
+		The accesses of non-secured URLs are permitted without authentication. 
+		ex) /home   
+	 -->
+	<security:http pattern="/**" security="none" />
+
+	<!-- 
+		This is a core class of spring-security.
+		PreAuthenticatedAuthenticationProvider will be used to provide our user object.	   
+	 -->
+	<security:authentication-manager alias="authenticationManager">
+		<security:authentication-provider
+			ref="preAuthProvider" />
+	</security:authentication-manager>
+
+	<bean id="preAuthProvider"
+		class="org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider">
+		<property name="preAuthenticatedUserDetailsService">
+			<bean id="userService"
+				class="com.googlecode.goodsamples.springsecurity.preauthentication.UserService" />
+		</property>
+	</bean>
+
+	<bean id="preAuthenticatedProcessingFilter"
+		class="com.googlecode.goodsamples.springsecurity.preauthentication.PreAuthenticatedProcessingFilter">
+		<constructor-arg>
+			<ref bean="authenticationManager" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="exceptionTranslationFilter"
+		class="org.springframework.security.web.access.ExceptionTranslationFilter">
+		<property name="authenticationEntryPoint" ref="http403EntryPoint" />
+	</bean>
+
+	<bean id="http403EntryPoint"
+		class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint" />
+
+	<context:component-scan base-package="com.googlecode">
+		<context:exclude-filter expression="org.springframework.stereotype.Controller"
+			type="annotation" />
+	</context:component-scan>
+</beans>

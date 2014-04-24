@@ -1,0 +1,81 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>lab</groupId>
+		<artifactId>parent</artifactId>
+		<version>0.1-SNAPSHOT</version>
+		<relativePath>../good-samples-parent</relativePath>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>hybernate</artifactId>
+	<name>hybernate</name>
+	<version>0.1</version>
+
+	<properties>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>jboss</id>
+			<url>http://repository.jboss.com/maven2</url>
+		</repository>
+	</repositories>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.7</version>
+				<configuration>
+					<useProjectReferences>false</useProjectReferences>
+					<downloadSources>true</downloadSources>
+					<sourceIncludes>
+						<include>**/*.xml</include>
+					</sourceIncludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<!-- Required -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate</artifactId>
+			<version>3.2.6.ga</version>
+		</dependency>
+		<dependency>
+			<groupId>hibernate-annotations</groupId>
+			<artifactId>hibernate-annotations</artifactId>
+			<version>3.3.0.GA</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-commons-annotations</artifactId>
+			<version>3.3.0.ga</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>com.springsource.org.hsqldb</artifactId>
+			<version>1.8.0.9</version>
+		</dependency>
+		<!--
+			dependency> <groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId> <version>1.5.11</version>
+			</dependency> <dependency> <groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId> <version>1.6.1</version> </dependency>
+			<dependency> <groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId> <version>3.2.1</version>
+			</dependency> <dependency> <groupId>cglib</groupId>
+			<artifactId>cglib</artifactId> <version>2.2</version> </dependency>
+			<dependency> <groupId>javax.transaction</groupId>
+			<artifactId>jta</artifactId> <version>1.1</version> </dependency>
+			<dependency> <groupId>antlr</groupId> <artifactId>antlr</artifactId>
+			<version>2.7.7</version> </dependency> <dependency>
+			<groupId>javax.persistence</groupId>
+			<artifactId>persistence-api</artifactId> <version>1.0</version>
+			</dependency
+		-->
+	</dependencies>
+</project>
