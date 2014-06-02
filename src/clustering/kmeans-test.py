@@ -32,5 +32,13 @@ class TestKMeans(unittest.TestCase):
 		c.add(kmeans.Point(3,4))
 		self.assertEquals(kmeans.Point(1.8,2.3), c.mean_vector())
 
+	def test_can_find_furthest_points(self):
+		p = ([kmeans.Point(1,1), kmeans.Point(1.5,2),\
+			kmeans.Point(3,4), kmeans.Point(5,7),\
+			kmeans.Point(3.5,5.0), kmeans.Point(4.5,5.0),\
+			kmeans.Point(3.5,4.5)])
+		self.assertEquals([kmeans.Point(1,1),kmeans.Point(5,7)],\
+			kmeans.furthest(p))
+
 if __name__ == '__main__':
 	unittest.main()

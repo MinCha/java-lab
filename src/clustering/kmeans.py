@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import math
+from collections import OrderedDict
 
 class Point:
 	def __init__(self, x, y):
@@ -26,8 +27,9 @@ class Point:
 class Cluster:
 	def __init__(self, root, child=None):
 		self.root = root
-		self.child = child
-		if (self.child == None): 
+		if child != None:
+			self.child = child
+		else:
 			self.child = []
 
 	def __str__(self):
@@ -58,6 +60,8 @@ def furthest(p):
 	return score[len(score)-1].values()[0]
 
 def clustering(c, p):
+	print title("Cluster Root "+str(c))
+	c = OrderedDict.fromKeys(c)
 	result = {repr(eachc): Cluster(eachc) for eachc in c}
 	p = [x for x in p if x not in c]
 	for eachp in p:
@@ -70,9 +74,27 @@ def closestcluster(p, c):
 		if result == None or a.edistance(p) < result.edistance(p):
 			result = a
 	return result
-	
 
-p = ([Point(1,1), Point(1.5,2), Point(3,4), Point(5,7), Point(3.5,5.0),\
-	Point(4.5,5.0), Point(3.5,4.5)])
-initial = furthest(p)
-print clustering(initial, p)
+def title(t):
+	return "===" + t + "==="
+
+def main():
+	p = ([Point(1,1), Point(1.5,2), Point(3,4), Point(5,7), Point(3.5,5.0),\
+		Point(4.5,5.0), Point(3.5,4.5)])
+	initial = furthest(p)
+	cluster = clustering(initial, p)
+	print title("First clustering")
+	print cluster
+	iterator = 1
+	while True:
+		print title(str(iterator) + "th clustering")
+		newcluster = clustering([x.mean_vector() for key, x in cluster.iteritems()], p)
+		print newcluster
+		if newcluster.itervalues().next().mean_vector() == cluster.itervalues().next().mean_vector():
+			break
+		cluster = newcluster;
+		iterator += 1
+	print title("Result=" + str(cluster))
+
+if __name__ == '__main__':
+	main()
