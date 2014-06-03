@@ -19,8 +19,8 @@ class Point:
 	def __repr__(self):
 		return "Point(%s,%s)" % (self.x,self.y)
 
-	def edistance(self, point):
-		return math.sqrt(pow(self.x - point.x, 2) + pow(self.y - point.y, 2));
+	def edistance(self, p):
+		return math.sqrt(pow(self.x - p.x, 2) + pow(self.y - p.y, 2));
 
 
 class Cluster:
