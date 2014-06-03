@@ -7,3 +7,4 @@ String
 lab.iml
 /.idea
 *.swp
+*.pyc
