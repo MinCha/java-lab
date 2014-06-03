@@ -19,15 +19,16 @@ class TestKMeans(unittest.TestCase):
 	def test_point_can_be_added_to_cluster(self):
 		c = kmeans.Cluster(kmeans.Point(1,1))
 		c.add(kmeans.Point(2,2))
-		self.assertEquals(kmeans.Point(2,2), c.child[0])
+		self.assertEquals(kmeans.Point(2,2), c.points[0])
 
-	def test_cluster_can_compare_with_root(self):
+	def test_cluster_can_compare_with_mean(self):
 		c = kmeans.Cluster(kmeans.Point(1,1))
-		self.assertTrue(c.same_root(kmeans.Point(1,1)))
-		self.assertFalse(c.same_root(kmeans.Point(1,2)))
+		self.assertTrue(c.same_mean(kmeans.Point(1,1)))
+		self.assertFalse(c.same_mean(kmeans.Point(1,2)))
 
 	def test_cluster_can_compute_mean_vector(self):
 		c = kmeans.Cluster(kmeans.Point(1,1))
+		c.add(kmeans.Point(1,1))
 		c.add(kmeans.Point(1.5,2))
 		c.add(kmeans.Point(3,4))
 		self.assertEquals(kmeans.Point(1.8,2.3), c.mean_vector())

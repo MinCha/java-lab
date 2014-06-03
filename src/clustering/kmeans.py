@@ -1,6 +1,5 @@
 #!/usr/bin/python
 import math
-from collections import OrderedDict
 
 class Point:
 	def __init__(self, x, y):
@@ -25,32 +24,36 @@ class Point:
 
 
 class Cluster:
-	def __init__(self, root, child=None):
-		self.root = root
-		if child != None:
-			self.child = child
+	def __init__(self, mean, points=None):
+		self.mean = mean
+		if points != None:
+			self.points = points
 		else:
-			self.child = []
+			self.points = []
+
+	def __eq__(self, other):
+        	if isinstance(other, self.__class__):
+			return self.__dict__ == other.__dict__
+
+	def __ne__(self, other):
+        	return not self.__eq__(other)
 
 	def __str__(self):
 		return repr(self);
 
 	def __repr__(self):
-		return "Cluster(%s,%s)" % (self.root,self.child)
+		return "Cluster(%s,%s)" % (self.mean,self.points)
 
-	def add(self, child):
-		self.child.append(child)
+	def add(self, p):
+		self.points.append(p)
 
-	def same_root(self, other):
-		return self.root == other
+	def same_mean(self, other):
+		return self.mean == other
 
-	def all(self): 
-		return [self.root] + self.child
-	
 	def mean_vector(self):
-		x = reduce(lambda i, x: i+x, [p.x for p in self.all()])
-		y = reduce(lambda i, y: i+y, [p.y for p in self.all()])
-		size = len(self.child) + 1
+		x = reduce(lambda i, x: i+x, [p.x for p in self.points])
+		y = reduce(lambda i, y: i+y, [p.y for p in self.points])
+		size = len(self.points)
 		return Point(round(x / size,1), round(y / size,1))
 
 def furthest(p):
@@ -59,20 +62,22 @@ def furthest(p):
 	score.sort()
 	return score[len(score)-1].values()[0]
 
-def clustering(c, p):
-	print title("Cluster Root "+str(c))
-	c = OrderedDict.fromKeys(c)
-	result = {repr(eachc): Cluster(eachc) for eachc in c}
-	p = [x for x in p if x not in c]
+def clustering(r,p):
+	print "Cluster Mean Vector "+str(r)
+	result = [Cluster(eachc) for eachc in r]
 	for eachp in p:
-		result[repr(closestcluster(eachp,c))].add(eachp)		
+		target=closestcluster(r,eachp)
+		for eachc in result:
+			if eachc.mean == target:
+				eachc.add(eachp)
+	print "Cluster Result  "+str(result)
 	return result
 
-def closestcluster(p, c):
+def closestcluster(c,p):
 	result = None
-	for a in c:
-		if result == None or a.edistance(p) < result.edistance(p):
-			result = a
+	for cluster in c:
+		if result == None or cluster.edistance(p) < result.edistance(p):
+			result = cluster
 	return result
 
 def title(t):
@@ -83,16 +88,14 @@ def main():
 		Point(4.5,5.0), Point(3.5,4.5)])
 	initial = furthest(p)
 	cluster = clustering(initial, p)
-	print title("First clustering")
 	print cluster
 	iterator = 1
 	while True:
-		print title(str(iterator) + "th clustering")
-		newcluster = clustering([x.mean_vector() for key, x in cluster.iteritems()], p)
-		print newcluster
-		if newcluster.itervalues().next().mean_vector() == cluster.itervalues().next().mean_vector():
+		print title(str(iterator) + "th relocating")
+		newcluster = clustering([c.mean_vector() for c in cluster], p)
+		if newcluster == cluster:
 			break
-		cluster = newcluster;
+		cluster = newcluster
 		iterator += 1
 	print title("Result=" + str(cluster))
 
