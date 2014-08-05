@@ -3,15 +3,17 @@
 # ~~~~
 
 # Home page
-GET / controllers.Application.index
+GET / @controllers.Application.index
 
-GET /hello controllers.Basic.hello
+GET /hello @controllers.Basic.hello
 
-GET /helloreq controllers.Basic.helloreq
+GET /helloreq @controllers.Basic.helloreq
 
-GET /hellonum/:num controllers.Basic.hellonum(num: Long)
+GET /hellonum/:num @controllers.Basic.hellonum(num: Long)
 
-GET /vayne controllers.Api.vayne
+GET /vayne @controllers.Jpa.vayne
+
+GET /vayneskill @controllers.Jpa.vayneskill
 
 # Map static resources from the /public folder to the /assets URL path
 GET /assets/*file controllers.Assets.at(path="/public", file)

@@ -1,8 +1,11 @@
 package controllers
 
+import model.ChampionRepository
+import org.springframework.stereotype
 import play.api.mvc._
 
-object Basic extends Controller {
+@stereotype.Controller
+class Basic extends Controller {
 
   def hello = Action {
     Ok("Hello")

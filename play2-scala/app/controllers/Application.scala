@@ -1,9 +1,10 @@
 package controllers
 
-import play.api._
+import org.springframework.stereotype
 import play.api.mvc._
 
-object Application extends Controller {
+@stereotype.Controller
+class Application extends Controller {
 
   def index = Action {
     Ok(views.html.index("Your new application is ready."))
