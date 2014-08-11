@@ -1,5 +1,6 @@
 package controllers
 
+import model.Champion
 import org.springframework.stereotype
 import play.api.mvc._
 
@@ -7,8 +8,7 @@ import play.api.mvc._
 class Api extends Controller {
 
   def vayne = Action {
-    //val vayne = new Champion("vayne", List("tumble","condemn"))
-    //Ok(Json.toJson(vayne))
-    Ok("some")
+    val vayne = new Champion("vayne", "time of")
+    Ok(vayne.toString)
   }
 }
