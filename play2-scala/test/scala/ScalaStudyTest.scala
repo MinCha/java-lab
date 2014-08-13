@@ -78,4 +78,39 @@ class ScalaStudyTest {
 
     assert(sum(1,2,3,4) == 10)
   }
+
+  @Test def higherOrderFunction(): Unit = {
+    val item = List(1,2,3,4,5)
+    def filtering(matcher: Int=>Boolean) = {
+      for (each <- item; if matcher(each)) yield each
+    }
+
+    val result = filtering(_ > 3)
+
+    assert(result == List(4,5))
+  }
+
+  @Test def higherOrderFunctionMoreFormally(): Unit = {
+    val item = List(1,2,3,4,5)
+    def filtering(matcher: Int=>Boolean) = {
+      for (each <- item; if matcher(each)) yield each
+    }
+
+    val result = filtering(_ > 3)
+
+    assert(result == List(4,5))
+  }
+
+  @Test def curryingWithCurry(): Unit = {
+    def mix(a: Int)(func: Int=>Int) = func(a)
+
+    val resultX = mix(10) {
+      (x: Int) => x * 10
+    }
+
+    val resultY = mix(10)((x: Int) => x * 10)
+
+    assert(resultX == 100)
+    assert(resultX == resultY)
+  }
 }
