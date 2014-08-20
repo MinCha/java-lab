@@ -46,21 +46,21 @@ class ScalaStudyTest {
     assert(list.filter(_ % 2 == 0) == List(2,4,6))
   }
 
-  @Test def partiallyAppliedFunctions() {
+  @Test def partiallyApplied() {
     def sum(a: Int, b: Int, c:Int) = a + b + c
     def modifiedSum = sum _
 
     assert(sum(1,2,3) == modifiedSum(1,2,3))
   }
 
-  @Test def closureFunction() {
+  @Test def closure() {
     var outboundValue = 99
     def closureFunction = (x: Int) => x + outboundValue
 
     assert(closureFunction(2) == 101)
    }
 
-  @Test def closureFunctionWithChangingOutsideValue() {
+  @Test def closureWithChangingOutsideValue() {
     var outboundValue = 99
     def closureFunction = (x: Int) => outboundValue = outboundValue + x
 

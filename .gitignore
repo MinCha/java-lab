@@ -1,10 +1,11 @@
-/.settings
-/target
-/.classpath
-/.project
+**/.settings
+**/target
+**/.classpath
+**/.project
 String
-/.externalToolBuilders
+.externalToolBuilders
+.metadata
 lab.iml
-/.idea
+**/.idea
 *.swp
 *.pyc
