@@ -1,5 +1,6 @@
 package nextnote;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class NextNote {
 
 	public void modifyFont(int id, String font, int size) {
 		Note targetNote = (Note) notes.get(id);
+		targetNote.updated = new Date();
 		targetNote.font = font;
 	}
 

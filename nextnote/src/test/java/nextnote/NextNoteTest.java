@@ -11,7 +11,7 @@ public class NextNoteTest {
 	public void 노트를_추가할수_있다() {
 		NextNote sut = new NextNote();
 		
-		int id = sut.addNextNote(new Note("next title", "contents", new Date(), new Date(), "nanum"));
+		int id = sut.addNextNote(new Note("next title", "contents", "nanum"));
 		
 		Note result = sut.findNote(id);
 		Assert.assertEquals("next title", result.title);
@@ -19,9 +19,19 @@ public class NextNoteTest {
 	}
 	
 	@Test
+	public void 노트추가시_명시된_폰트사이즈가_없으면_기본폰트사이즈를_자동으로_지정한다() {
+		NextNote sut = new NextNote();
+		
+		int id = sut.addNextNote(new Note("next title", "contents", "nanum"));
+		
+		Note result = sut.findNote(id);
+		Assert.assertEquals(10, result.fontsize);		
+	}
+	
+	@Test
 	public void 노트의_폰트를_변경할수_있다() {
 		NextNote sut = new NextNote();
-		int id = sut.addNextNote(new Note("next title", "contents", new Date(), new Date(), "nanum"));
+		int id = sut.addNextNote(new Note("next title", "contents", "nanum"));
 		
 		sut.modifyFont(id, "gothic", 15);
 		
