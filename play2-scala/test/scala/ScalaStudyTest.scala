@@ -1,5 +1,6 @@
 package scala
 
+import model.Champion
 import org.junit.Test
 
 class ScalaStudyTest {
@@ -112,5 +113,17 @@ class ScalaStudyTest {
 
     assert(resultX == 100)
     assert(resultX == resultY)
+  }
+
+  @Test def anyEquals(): Unit = {
+    val tester = new Champion("tester", "testing")
+    val testerClone = new Champion("tester", "testing")
+
+    println(tester.toString)
+    println(testerClone.toString)
+
+    println(tester.equals(testerClone))
+    println(tester == testerClone)
+    //assert(tester == testerClone)
   }
 }
