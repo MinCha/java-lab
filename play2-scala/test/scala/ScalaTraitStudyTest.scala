@@ -26,7 +26,7 @@ class ScalaTraitStudyTest {
     abstract override def say(): String = {
       return super.say() + "DogLol"
     }
-  }
+  }ㅂ버
 
   @Test def stackableModification(): Unit = {
     assert(new Dog().say() == "Dog")
