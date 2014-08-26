@@ -8,7 +8,7 @@ import scala.beans.BeanProperty
  * Created by Vayne on 2014. 7. 28..
  */
 @Entity
-class Champion (private var name: String, private var skill: String) extends BaseModel {
+class Champion (@BeanProperty var name: String, @BeanProperty var skill: String) extends BaseModel {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @BeanProperty

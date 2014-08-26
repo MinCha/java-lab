@@ -115,15 +115,16 @@ class ScalaStudyTest {
     assert(resultX == resultY)
   }
 
-  @Test def anyEquals(): Unit = {
-    val tester = new Champion("tester", "testing")
-    val testerClone = new Champion("tester", "testing")
+  @Test def equals(): Unit = {
+    val a = new String("String")
+    val b = new String("String")
+    val c = "String"
+    val d = "String"
 
-    println(tester.toString)
-    println(testerClone.toString)
-
-    println(tester.equals(testerClone))
-    println(tester == testerClone)
-    //assert(tester == testerClone)
+    assert(a == b)
+    assert((a eq b) == false)
+    assert(a ne b)
+    assert(c == d)
+    assert(c eq d)
   }
 }
