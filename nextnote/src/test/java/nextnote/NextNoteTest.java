@@ -39,7 +39,8 @@ public class NextNoteTest {
 	public void 노트의_폰트를_변경할수_있다() {
 		NextNote sut = new NextNote();
 		int id = sut.addNextNote(new Note("next title", "contents", "nanum"));
-		
+	
+		//TODO 폰트 사이즈는 현재 저장되지 않는 버그 있음  
 		sut.modifyFont(id, "gothic", 15);
 		
 		Note result = sut.findNote(id);
