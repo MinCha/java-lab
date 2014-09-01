@@ -4,23 +4,30 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:jpa="http://www.springframework.org/schema/data/jpa"
-       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
 		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.0.xsd
-		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
 
     <context:component-scan base-package="*" />
+    <tx:annotation-driven />
     <jpa:repositories base-package="*"/>
     <context:property-placeholder location="classpath:application.conf"/>
     <!--<util:properties id="env" location="classpath:env.properties"/>-->
 
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
           destroy-method="close"
-          p:driverClassName="${db.default.driver}"
-          p:url="jdbc:h2:mem:play"
+          p:driverClassName="org.h2.Driver"
+          p:url="jdbc:h2:mem:play2"
           p:validationQuery="select 1"/>
+    <!--
+    p:driverClassName="com.mysql.jdbc.Driver"
+    p:url="jdbc:mysql://54.250.183.37:3306/test"
+    p:username="dev-wave"
+    p:password="krokii!@#"
+    -->
 
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"
           p:dataSource-ref="dataSource"/>
@@ -40,12 +47,13 @@
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
                 <property name="generateDdl" value="true"/>
                 <property name="showSql" value="true"/>
-                <property name="databasePlatform" value="org.hibernate.dialect.H2Dialect"/>
-                <property name="database" value="H2"/>
+                <property name="databasePlatform" value="org.hibernate.dialect.MySQLDialect"/>
+                <property name="database" value="MYSQL"/>
             </bean>
         </property>
         <property name="jpaProperties">
             <value>
+                hibernate.format_sql = true
                 hibernate.cache.use_second_level_cache = false
                 hibernate.cache.use_query_cache = false
                 hibernate.hbm2ddl.auto = create
