@@ -12,7 +12,6 @@ import scala.beans.BeanProperty
  */
 @Entity(name = "champion")
 class Champion (var n: String, var s: String) extends BaseModel {
-
   @BeanProperty
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,10 +24,14 @@ class Champion (var n: String, var s: String) extends BaseModel {
   var skill = s
 
   @BeanProperty
-  @OneToMany(mappedBy="champion", cascade = Array(CascadeType.ALL), orphanRemoval = true, fetch = FetchType.EAGER)
+  @OneToMany(mappedBy="champion", cascade = Array(CascadeType.ALL), orphanRemoval = true, fetch = FetchType.LAZY)
   var weapons: util.List[Weapon] = new util.ArrayList[Weapon]()
 
   def this() = this(null, null)
+
+  def addWeapon(name : String) {
+      this.addWeapon(new Weapon(this, name))
+  }
 
   def addWeapon(weapon: Weapon) {
     this.weapons.add(weapon)
