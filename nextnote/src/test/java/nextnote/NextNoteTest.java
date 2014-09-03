@@ -89,4 +89,15 @@ public class NextNoteTest {
 		
 		Assert.assertEquals("title3", sut.findNote(idC).getTitle());
 	}
+	
+	@Test
+	public void 카테고리를_추가할수있다() {
+		NextNote sut = new NextNote();
+		
+		Category category = sut.addCategory("name");
+		
+		Assert.assertNotNull(category);
+		Category result = sut.findCategory(category.getId());
+		Assert.assertEquals(category.getName(), result.getName());
+	}
 }

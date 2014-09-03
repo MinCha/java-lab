@@ -53,7 +53,8 @@ public class MapTest {
 	public void HashMap과_TreeMap은_어떤차이가있는걸까() {
 		Map hash = new HashMap();
 		Map tree = new TreeMap();
-			for (int i = 0; i < 50; i++) {
+		
+		for (int i = 0; i < 50; i++) {
 			int seed = new Random().nextInt(100);
 			hash.put(seed, seed);
 			tree.put(seed, seed);

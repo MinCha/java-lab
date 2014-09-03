@@ -9,7 +9,9 @@ import java.util.Map;
 //TODO 노트 추가 시 폰트 사이즈 어떻게 할꺼야?
 public class NextNote {
 	public int currentId = 1;
+	public int currentCategoryId = 1;
 	public Map<Integer, Note> notes = new HashMap<Integer, Note>();
+	public Map<Integer, Category> categories = new HashMap<Integer, Category>();
 
 	public int addNextNote(Note note) {
 		int id = currentId++;
@@ -34,5 +36,16 @@ public class NextNote {
 
 	public void removeNote(int id) {
 		notes.remove(id);
+	}
+
+	public Category addCategory(String categoryName) {
+		int id = currentId++;
+		Category category = Category.create(id, categoryName);
+		categories.put(id, category);
+		return category;
+	}
+
+	public Category findCategory(Integer id) {
+		return categories.get(id);
 	}
 }
