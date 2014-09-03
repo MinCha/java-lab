@@ -11,6 +11,12 @@ def some_function(maybe_list):
   maybe_list.sort()
   return maybe_list
 
-print(some_function([5,2,3,1,4]))
-print(some_function("What is this?"))
+def ok():
+  print(some_function([5,2,3,1,4]))
+
+def error(): 
+  print(some_function("What is this?"))
+
+ok()
+error()
 

@@ -9,7 +9,7 @@ import java.util.Map;
 //TODO 노트 추가 시 폰트 사이즈 어떻게 할꺼야?
 public class NextNote {
 	public int currentId = 1;
-	public Map notes = new HashMap();
+	public Map<Integer, Note> notes = new HashMap<Integer, Note>();
 
 	public int addNextNote(Note note) {
 		int id = currentId++;
@@ -20,7 +20,7 @@ public class NextNote {
 	// IndexOutOfBoundException
 	public Note findNote(int id) {
 		//TODO [차민창] 노트를 넣었는데 왜 다시 캐스팅을 해야 하나? -> 제네릭으로 이어가면 좋을 듯
-		return (Note) notes.get(id);
+		return notes.get(id);
 	}
 
 	public void modifyFont(int id, String font, int size) {
@@ -28,12 +28,11 @@ public class NextNote {
 		targetNote.modifyFont(font);		
 	}
 
-	public List getNotes() {
-		return new LinkedList(notes.values());
+	public List<Note> getNotes() {
+		return new LinkedList<Note>(notes.values());
 	}
 
 	public void removeNote(int id) {
 		notes.remove(id);
 	}
-
 }

@@ -12,7 +12,7 @@ import org.junit.Test;
  * 2. 간접 접근
  * note.getTitle() 
  */
-public class NextNoteTest {
+public class NextNoteTest {		
 	//제목/본문/생성시간/마지막수정/폰트 
 	@Test
 	public void 노트를_추가할수_있다() {
