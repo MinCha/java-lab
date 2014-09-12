@@ -1,8 +1,8 @@
-package scala
+package library
 
 import model.Champion
-import net.liftweb.json.{NoTypeHints, Serialization}
 import net.liftweb.json.Serialization._
+import net.liftweb.json.{NoTypeHints, Serialization}
 import org.junit.Test
 
 /**

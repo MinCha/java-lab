@@ -3,29 +3,24 @@ package scala
 import org.junit.Test
 
 /**
- * Created by Vayne on 2014. 8. 26..
+ * Date : 2014. 8. 26
+ * Author : Vayne
  */
-class ScalaTraitStudyTest {
+class TraitTest {
   abstract class Animal {
     def say(): String
   }
 
   class Dog extends Animal {
-    def say(): String = {
-      return "Dog"
-    }
+    def say(): String = "Dog"
   }
 
   trait DogSong extends Animal {
-    abstract override def say(): String = {
-      return super.say() + "DogSong"
-    }
+    abstract override def say(): String = super.say() + "DogSong"
   }
 
   trait DogLol extends Animal {
-    abstract override def say(): String = {
-      return super.say() + "DogLol"
-    }
+    abstract override def say(): String = super.say() + "DogLol"
   }
 
   @Test def stackableModification(): Unit = {
