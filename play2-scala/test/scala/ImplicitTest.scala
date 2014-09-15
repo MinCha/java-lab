@@ -46,6 +46,14 @@ class ImplicitTest {
         quicksort(elements.filter(pivot>))(orderer) ++ elements.filter(pivot==) ++ quicksort(elements.filter(pivot<))(orderer)
     }
 
+    def quicksortWithViewbound[T <% Ordered[T]](elements: List[T]): List[T] = elements match {
+      case List() => elements
+      case List(onlyOne) => elements
+      case x :: rest =>
+        val pivot = elements(elements.size / 2)
+      quicksort(elements.filter(pivot>)) ++ elements.filter(pivot==) ++ quicksort(elements.filter(pivot<))
+    }
+
     class I(x: Int) extends BaseModel {
       val value = x
     }
@@ -61,8 +69,12 @@ class ImplicitTest {
     }
     implicit def iToIOrdered(x: I) : IOrdered = new IOrdered(x)
 
+
+    println("cha min".reverse)
+
     assert(quicksort(List(I(5))) == List(I(5)))
-    assert(quicksort(List(9,2,31,87,12)) == List(2,9,12,31,87))
+    assert(quicksort(List(I(9),I(2),I(31),I(87),I(12))) == List(I(2),I(9),I(12),I(31),I(87)))
+    assert(quicksortWithViewbound(List(I(9),I(2),I(31),I(87),I(12))) == List(I(2),I(9),I(12),I(31),I(87)))
   }
 }
 
