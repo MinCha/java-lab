@@ -13,4 +13,8 @@ class BaseModel extends AnyRef {
   override def hashCode: Int = {
     HashCodeBuilder.reflectionHashCode(this)
   }
+
+  override def equals(o: scala.Any): Boolean = {
+    EqualsBuilder.reflectionEquals(this, o);
+  }
 }
