@@ -69,9 +69,6 @@ class ImplicitTest {
     }
     implicit def iToIOrdered(x: I) : IOrdered = new IOrdered(x)
 
-
-    println("cha min".reverse)
-
     assert(quicksort(List(I(5))) == List(I(5)))
     assert(quicksort(List(I(9),I(2),I(31),I(87),I(12))) == List(I(2),I(9),I(12),I(31),I(87)))
     assert(quicksortWithViewbound(List(I(9),I(2),I(31),I(87),I(12))) == List(I(2),I(9),I(12),I(31),I(87)))
