@@ -1,4 +1,4 @@
-package nextnote;
+package nextnote.learning;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +9,9 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class MapTest {
+	@SuppressWarnings("unused")
 	@Test
 	public void Map을_여러구현체로_생성할수있다() {
 		Map hashMap = new HashMap();

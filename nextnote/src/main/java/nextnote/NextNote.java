@@ -1,51 +1,113 @@
 package nextnote;
 
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
-//TODO [차민창] 접근제어자의 의미  
-//TODO 노트 추가 시 폰트 사이즈 어떻게 할꺼야?
 public class NextNote {
-	public int currentId = 1;
-	public int currentCategoryId = 1;
-	public Map<Integer, Note> notes = new HashMap<Integer, Note>();
-	public Map<Integer, Category> categories = new HashMap<Integer, Category>();
+	private Category defaultCategory;
+	private Map<CategoryId, Category> categories = new TreeMap<CategoryId, Category>();
 
-	public int addNextNote(Note note) {
-		int id = currentId++;
-		notes.put(id, note);
-		return id;
-	}
-	
-	// IndexOutOfBoundException
-	public Note findNote(int id) {
-		//TODO [차민창] 노트를 넣었는데 왜 다시 캐스팅을 해야 하나? -> 제네릭으로 이어가면 좋을 듯
-		return notes.get(id);
+	public NextNote() {
+		createDefaultCategory();
 	}
 
-	public void modifyFont(int id, String font, int size) {
-		Note targetNote = (Note) notes.get(id);
-		targetNote.modifyFont(font);		
+	public Note addNote(Note note) {
+		return addNote(defaultCategory, note);
 	}
 
-	public List<Note> getNotes() {
-		return new LinkedList<Note>(notes.values());
+	public Note addNote(Category category, Note note) {
+		NoteId id = NoteId.issue();
+		note.setId(id);
+		category.addNote(note);
+		return note;
 	}
 
-	public void removeNote(int id) {
-		notes.remove(id);
+	public Note findNoteById(NoteId id) {
+		// TODO 성능 - 노트를 찾을 때 아래와 같이 O(n)인데 이게 좋은 방법일지?
+		for (Category each : categories.values()) {
+			for (Note eachNote : each.getNotes()) {
+				if (eachNote.isSameId(id)) {
+					return eachNote;
+				}
+			}
+		}
+
+		// TODO 디자인 - 왜 Null을 반환하지 않고 Exception을 던질까?
+		throw new NoteNotFoundException();
+	}
+
+	public List<Note> findAllNotes() {
+		List<Note> result = new ArrayList<Note>();
+
+		for (Category each : categories.values()) {
+			result.addAll(each.getNotes());
+		}
+
+		return result;
+	}
+
+	public void removeNote(Note note) {
+		for (Category each : categories.values()) {
+			each.removeNoteIfExists(note.getId());
+		}
 	}
 
 	public Category addCategory(String categoryName) {
-		int id = currentId++;
+		CategoryId id = CategoryId.issue();
 		Category category = Category.create(id, categoryName);
-		categories.put(id, category);
+		categories.put(category.getId(), category);
 		return category;
 	}
 
-	public Category findCategory(Integer id) {
+	public Category findCategoryById(CategoryId id) {
 		return categories.get(id);
+	}
+
+	public void deleteCategory(Category category) {
+		for (Note each : category.getNotes()) {
+			defaultCategory.addNote(each);
+		}
+
+		categories.remove(category.getId());
+	}
+
+	public List<Category> findAllCategories() {
+		// TODO 디자인 - unmodifiableList를 쓰는 이유는?
+		return Collections.unmodifiableList(new ArrayList<Category>(categories
+				.values()));
+	}
+
+	public void updateNote(Note note) {
+		Category category = findCategoryByNoteId(note.getId());
+		// TODO 자바참조모델 - 아래 한줄(updateNote)을 빼도 테스트가 통과한다. 왜 통과할까? 그리고 왜 아래 코드가 있어야 할까?
+		category.udateNote(note);
+	}
+
+	public List<String> getAvailableFonts() {
+		return AvailableFonts.list();
+	}
+
+	public Category getDefaultCategory() {
+		return defaultCategory;
+	}
+
+	private Category findCategoryByNoteId(NoteId noteId) {
+		for (Category each : categories.values()) {
+			for (Note eachNote : each.getNotes()) {
+				if (eachNote.isSameId(noteId)) {
+					return each;
+				}
+			}
+		}
+		
+		throw new NoteNotFoundException();
+	}	
+
+	private void createDefaultCategory() {
+		defaultCategory = Category.createDefaultCategory();
+		categories.put(defaultCategory.getId(), defaultCategory);
 	}
 }

@@ -6,57 +6,59 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * 1. 직접 접근
- * note.title
+ * 둘간에는 어떤 차이가 있는걸까? 
  * 
- * 2. 간접 접근
- * note.getTitle() 
+ * 1. 직접 접근 -> note.title
+ * 2. 간접 접근 -> note.getTitle() 
  */
 public class NextNoteTest {		
-	//제목/본문/생성시간/마지막수정/폰트 
+	private NextNote sut = new NextNote();
+	
 	@Test
 	public void 노트를_추가할수_있다() {
-		NextNote sut = new NextNote();
+		Category newCategory = sut.addCategory("일상");
 		
-		int id = sut.addNextNote(new Note("next title", "contents", "nanum"));
+		Note newNote = sut.addNote(aSomeNote());
 		
-		Note result = sut.findNote(id);
-		Assert.assertEquals("next title", result.getTitle());
-		Assert.assertEquals("contents", result.getContents());
+		Category result = sut.findCategoryById(newCategory.getId());
+		Note note = sut.findNoteById(newNote.getId());
+		Assert.assertEquals(newCategory, result);
+		Assert.assertEquals(aSomeNote().getTitle(), note.getTitle());
+		Assert.assertEquals(aSomeNote().getContents(), note.getContents());
 	}
-	
+
+	@Test
+	public void 노트를_수정할수_있다() {
+		Note note = sut.addNote(aSomeNote());
+		
+		Note savedNote = sut.findNoteById(note.getId());
+		savedNote.setTitle("modified title");
+		savedNote.setContents("modified contents");
+		sut.updateNote(savedNote);
+		
+		Note result = sut.findNoteById(note.getId());
+		Assert.assertEquals("modified title", result.getTitle());
+		Assert.assertEquals("modified contents", result.getContents());
+	}
+
 	@Test
 	public void 노트추가시_명시된_폰트사이즈가_없으면_기본폰트사이즈를_자동으로_지정한다() {
-		NextNote sut = new NextNote();
+		Note note = sut.addNote(aSomeNote());
 		
-		int id = sut.addNextNote(new Note("next title", "contents", "nanum"));
+		Note result = sut.findNoteById(note.getId());
 		
-		Note result = sut.findNote(id);
-		Assert.assertEquals(10, result.getFontsize());		
-	}
-	
-	@Test
-	public void 노트의_폰트를_변경할수_있다() {
-		NextNote sut = new NextNote();
-		int id = sut.addNextNote(new Note("next title", "contents", "nanum"));
-	
-		//TODO 폰트 사이즈는 현재 저장되지 않는 버그 있음  
-		sut.modifyFont(id, "gothic", 15);
-		
-		Note result = sut.findNote(id);
-		Assert.assertEquals("gothic", result.getFont());		
+		Assert.assertNotNull(result.getContentsStyle().getFontSize());		
 	}
 	
 	@Test
 	public void 그동안_작성한_노트를_리스트로_조회할수_있다() {
-		NextNote sut = new NextNote(); // SystemUnderTest(테스트 용어)
-		sut.addNextNote(new Note("title1", "contents1", "font1"));
-		sut.addNextNote(new Note("title2", "contents2", "font2"));
-		sut.addNextNote(new Note("title3", "contents3", "font3"));
-		sut.addNextNote(new Note("title4", "contents4", "font4"));
-		sut.addNextNote(new Note("title5", "contents5", "font5"));
+		sut.addNote(new Note("title1", "contents1"));
+		sut.addNote(new Note("title2", "contents2"));
+		sut.addNote(new Note("title3", "contents3"));
+		sut.addNote(new Note("title4", "contents4"));
+		sut.addNote(new Note("title5", "contents5"));
 		
-		List result = sut.getNotes();
+		List<Note> result = sut.findAllNotes();
 		
 		Assert.assertEquals(5, result.size());
 		Assert.assertEquals(((Note)result.get(0)).getTitle(), "title1");
@@ -65,39 +67,86 @@ public class NextNoteTest {
 	
 	@Test
 	public void 노트를_삭제할수_있다() {
-		NextNote sut = new NextNote();
-		int id = sut.addNextNote(new Note("next title", "contents", "nanum"));
+		Note note = sut.addNote(aSomeNote());
 		
-		sut.removeNote(id);
+		sut.removeNote(note);
 		
-		//방식1
-//		List<Note> result = sut.getNotes();
-//		Assert.assertEquals(0, result.size());	
-		//방식2
-		Note foundNote = sut.findNote(id);
-		Assert.assertNull(foundNote);
+		try {
+			sut.findNoteById(note.getId());
+			Assert.fail();
+		} catch (NoteNotFoundException e) {
+		}
 	}
 	
 	@Test
 	public void 노트를_삭제해도_아이디가_유지되어야한다() {
-		NextNote sut = new NextNote(); // SystemUnderTest(테스트 용어)
-		int idA = sut.addNextNote(new Note("title1", "contents1", "font1"));
-		int idB = sut.addNextNote(new Note("title2", "contents2", "font2"));
-		int idC = sut.addNextNote(new Note("title3", "contents3", "font3"));
+		Note noteA = sut.addNote(aSomeNote());
+		Note noteB = sut.addNote(aSomeNote());
+		Note noteC = sut.addNote(new Note("title3", "contents3"));
 		
-		sut.removeNote(idA);
+		sut.removeNote(noteA);
+		sut.removeNote(noteB);
 		
-		Assert.assertEquals("title3", sut.findNote(idC).getTitle());
+		Assert.assertEquals("title3", sut.findNoteById(noteC.getId()).getTitle());
 	}
 	
 	@Test
 	public void 카테고리를_추가할수있다() {
-		NextNote sut = new NextNote();
+		Category first = sut.addCategory("일상");
+		Category second = sut.addCategory("학습");
 		
-		Category category = sut.addCategory("name");
+		Assert.assertNotNull(first);
+		Category result = sut.findCategoryById(first.getId());
+		Assert.assertEquals(first.getName(), result.getName());
+		Assert.assertNotNull(second);
+		result = sut.findCategoryById(second.getId());
+		Assert.assertEquals(second.getName(), result.getName());
+	}
+
+	@Test
+	public void 카테고리를_삭제할수있다() {
+		Category category = sut.addCategory("지울 카테고리");
 		
-		Assert.assertNotNull(category);
-		Category result = sut.findCategory(category.getId());
-		Assert.assertEquals(category.getName(), result.getName());
+		sut.deleteCategory(category);
+		
+		Assert.assertNull(sut.findCategoryById(category.getId()));
+	}
+
+	@Test
+	public void 서비스에서_제공가능한_폰트목록을_조회할수있다() {
+		List<String> result = sut.getAvailableFonts();
+		
+		Assert.assertEquals(4, result.size());
+	}
+
+	@Test
+	public void 사용자가_만든_카테고리_목록을_조회할수있다() {
+		sut.addCategory("a");
+		sut.addCategory("b");
+		sut.addCategory("c");
+		
+		List<Category> result = sut.findAllCategories();
+
+		Assert.assertEquals(4, result.size());
+		Assert.assertEquals("a", result.get(1).getName());
+		Assert.assertEquals("b", result.get(2).getName());
+		Assert.assertEquals("c", result.get(3).getName());
+	}
+
+	@Test
+	public void 카테고리를_삭제하면_그안에_모든_노트는_기본카테고리로_이동한다() {
+		Category category = sut.addCategory("공부");
+		sut.addNote(category, aSomeNote());
+		sut.addNote(category, aSomeNote());
+		sut.addNote(category, aSomeNote());
+			
+		sut.deleteCategory(category);
+		
+		Category defaultCategory = sut.getDefaultCategory();
+		Assert.assertEquals(3, defaultCategory.getNoteCount());
+	}
+
+	private Note aSomeNote() {
+		return new Note("title", "contents");
 	}
 }

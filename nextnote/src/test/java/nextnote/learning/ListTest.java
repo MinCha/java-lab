@@ -1,4 +1,4 @@
-package nextnote;
+package nextnote.learning;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class ListTest {
 	@Test
 	public void 링크드리스트에서_Index의_동작을_확인한다() {
@@ -19,8 +20,8 @@ public class ListTest {
 		Assert.assertEquals(2, sut.get(1));
 		Assert.assertEquals(3, sut.get(2));
 		try {
-			Assert.assertEquals(null, sut.get(3)); // Exception!
-			Assert.fail();
+			Assert.assertEquals(null, sut.get(3)); // Exception이 발생하는데 왜 발생하는걸까?
+			Assert.fail(); // 무조건 실패한다는 의미이다.
 		} catch (IndexOutOfBoundsException e) {
 		}
 	}

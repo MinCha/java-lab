@@ -1,21 +1,17 @@
-package nextnote;
+package nextnote.learning;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class GenericTest {
-	Map any = new HashMap();
-
 	@Test
 	public void 아무거나_넣을수_있다() {
+		Map any = new HashMap();
 		any.put("1", new String("Walwal"));
 		any.put("2", new Integer(1));
 		
@@ -34,6 +30,7 @@ public class GenericTest {
 
 	@Test
 	public void primitive타입빼고는_다넣을수_있다() {
+		Map any = new HashMap();
 		any.put("1", 1111);
 		any.put("1", 1111.0d);
 		any.put("1", 1111.0f);
@@ -41,13 +38,8 @@ public class GenericTest {
 	}
 	
 	@Test
-	public void List타입에String을넘기면() {
-		System.out.println(sortList(Arrays.asList(5,3,1,2,4)));
-		//System.out.println(sortList("what is it?"));
-	}
-	
-	@Test
-	public void Generic이란() {
+	// 이클립스에서 보면 위에서 노란색으로 warning이 발생하는데, 아래 소스코드는 warning이 발생하지 않는다.
+	public void Generic이란무엇일까() {
 		Map<Integer, String> map = new HashMap<Integer, String>();
 		map.put(1, "String");
 		map.put(2, "Only String");
@@ -56,10 +48,5 @@ public class GenericTest {
 		Assert.assertEquals("String", first);
 		String second = map.get(2);
 		Assert.assertEquals("Only String", second);
-	}
-
-	private List sortList(List maybe_list) {
-		Collections.sort(maybe_list);
-		return maybe_list;
 	}
 }
