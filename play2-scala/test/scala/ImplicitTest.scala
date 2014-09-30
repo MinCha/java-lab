@@ -26,6 +26,10 @@ class ImplicitTest {
   }
 
   @Test def receiver(): Unit = {
+    val someNumber = 1 + 2
+
+    new Integer(1).+(2)
+
     class AppendStringWrapper(x: String) {
       def ++(append: String) = x + append + append
     }
@@ -67,6 +71,7 @@ class ImplicitTest {
         else 1
 
     }
+
     implicit def iToIOrdered(x: I) : IOrdered = new IOrdered(x)
 
     assert(quicksort(List(I(5))) == List(I(5)))

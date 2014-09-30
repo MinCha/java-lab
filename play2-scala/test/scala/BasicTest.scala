@@ -52,9 +52,11 @@ class BasicTest {
 
   @Test def partiallyApplied() {
     def sum(a: Int, b: Int, c:Int) = a + b + c
-    def modifiedSum = sum _
+    def modifiedSum = sum(_: Int, 5, 5)
+    def modifiedSumSecond = sum(_: Int, _:Int, 5)
 
-    assert(sum(1,2,3) == modifiedSum(1,2,3))
+    assert(modifiedSum(1) == 11)
+    assert(modifiedSumSecond(1,2) == 8)
   }
 
   @Test def repeatedParameters() {
@@ -79,4 +81,15 @@ class BasicTest {
     assert(c == d)
     assert(c eq d)
   }
-}
+
+  @Test def caseClassEqualitySupport(): Unit = {
+    case class Person(name: String, age: Integer)
+
+    val a = new Person("Min", 35)
+    val b = new Person("Min", 35)
+    val c = new Person("Cha", 20)
+
+    assert(a.equals(b))
+    assert(b.equals(c) == false)
+  }
+ }
