@@ -9,3 +9,4 @@ lab.iml
 **/.idea
 *.swp
 *.pyc
+.DS_Store
