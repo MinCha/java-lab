@@ -4,8 +4,9 @@ import org.junit.Test
 import org.scalatest.junit.JUnitSuite
 
 import scala.annotation.tailrec
+import scala.collection.JavaConversions._
 
-class Study extends JUnitSuite {
+class Chapter2 extends JUnitSuite {
   @Test def fibonacci_2_1() {
       def fib(found: Int) = {
         @tailrec
@@ -60,9 +61,7 @@ class Study extends JUnitSuite {
 
   @Test def uncurry_2_4() {
     def uncurry[A, B, C](f: A => B => C): (A, B) => C = {
-      (a: A, b: B) => {
-        f(a)(b)
-      }
+      (a: A, b: B) => f(a)(b)
     }
 
     val result = uncurry((a: Int) => (b: Int) => a + b)
