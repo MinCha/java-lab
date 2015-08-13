@@ -1,5 +1,6 @@
 package lol;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -12,12 +13,18 @@ public class RefreshTest {
     @Test
     public void refresh() throws Exception {
         String userName = System.getProperty("userName") == null ? "icearrows" : System.getProperty("userName");
+        println("User=" + userName);
         RestTemplate t = new RestTemplate();
         MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
         map.add("userName", userName);
         map.add("force", "true");
         String r = t.postForEntity("http://www.op.gg/summoner/ajax/spectator/", map, String.class).getBody();
         String id = r.replaceAll("(?is).*gameId=([0-9]+).*", "$1");
+        if (StringUtils.isNumeric(id) == false) {
+            println("Invalid Game ID=" + id);
+            return;
+        }
+        println("GameID=" + id);
 
         String recordUrl = "http://www.op.gg/summoner/ajax/requestRecording.json/gameId=" + id;
         println("URL=" + recordUrl);
