@@ -4,11 +4,8 @@ import org.junit.Test
 import org.scalatest.junit.JUnitSuite
 
 class Chapter3 extends JUnitSuite {
-
   sealed trait EList[+A]
-
   case object Nil extends EList[Nothing]
-
   case class Cons[A](head: A, tails: EList[A]) extends EList[A]
 
   object EList {
@@ -81,5 +78,20 @@ class Chapter3 extends JUnitSuite {
 
   @Test def init_3_6() {
     assert(EList.init(EList(1,2,3,4)) == EList(1,2,3))
+
+
+    case class Some(n: Int) {
+      val sign = n
+
+      def change(n: Int) = {
+        new Some(n)
+      }
+    }
+
+    val s = new Some(1)
+    println(s)
+    println(s.change(2))
+    println(s.copy(n = 3))
+    //s.sign = 2
   }
 }

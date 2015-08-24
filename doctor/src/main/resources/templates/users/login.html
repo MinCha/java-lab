@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" layout:decorator="layout/sitelayout">
+<head>
+<title th:text="#{app.name}">List of Hotels</title>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-12">
+				<h1 class="well well-small">Logins</h1>
+			</div>
+		</div>
+		<div layout:fragment="content">		
+			<div class="row">
+				<div class="col-xs-12">
+					<form action="#" th:action="@{/login}" method="post" th:object="${authentication}" class="form-horizontal">
+						<div class="form-group">
+							<label for="username" class="col-xs-2">UserName</label>
+							<div class="col-xs-6">
+								<input class="form-control" placeholder="userName" th:field="*{username}"/>
+							</div>
+							<div class="col-xs-4">
+								<p class="text-warning" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Error with Name</p>
+							</div>						
+						</div>
+						<div class="form-group">
+							<label for="password" class="col-xs-2">Password</label>
+							<div class="col-xs-6">
+								<input type="password" class="form-control" placeholder="Password" th:field="*{password}"/>
+							</div>
+							<div class="col-xs-4">
+								<p class="text-warning" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error with Address</p>
+							</div>						
+						</div>		
+						<button type="submit" class="btn btn-default">Submit</button>							
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
