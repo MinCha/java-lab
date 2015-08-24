@@ -1,11 +1,12 @@
 package doctor.interfaces.view
 
-import doctor.domain.{JoinChannel, Message}
+import doctor.domain.{Channel, JoinChannel, Message}
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility
 import com.fasterxml.jackson.annotation.JsonInclude.Include
 import com.fasterxml.jackson.annotation.{JsonAutoDetect, JsonIgnoreProperties, JsonInclude, JsonPropertyOrder}
 
 import scala.collection.JavaConverters._
+import scala.collection.JavaConversions._
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder(alphabetic = true)
@@ -28,6 +29,14 @@ class ListView(hasNext: Boolean, list: List[Any]) extends View {
 
 class ChannelMessageListView(channelId: Int, hasNext: Boolean, list: List[Any]) extends ListView(hasNext, list) {
   def getChannelId = channelId
+}
+
+class ChannelView(c: Channel) extends View {
+  def getId = c.id
+
+  def getName = c.name
+
+  def getMessages = new PlainListView(c.messages.map(new MessageDetailView(_)).toList)
 }
 
 class MessageDetailView(m: Message) extends View {

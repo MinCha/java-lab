@@ -1,7 +1,7 @@
 package doctor.interfaces
 
 import doctor.domain.{ChannelRepository, UserRepository}
-import doctor.interfaces.view.{MessageDetailView, PlainListView}
+import doctor.interfaces.view.{ChannelView, MessageDetailView, PlainListView}
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -16,9 +16,8 @@ class ChannelController(@Autowired channelRepository: ChannelRepository,
   @RequestMapping(Array("/channel"))
   def findChannelEntry(channelId: Int, model: Model) = {
     val c = ensure("channel") {channelRepository.findOne(channelId)}
-    val v = new PlainListView(c.messages.map(new MessageDetailView(_)).toList)
-    model.addAttribute("messages", v)
-    "chat/index"
+    model.addAttribute("c", new ChannelView(c))
+    "channel/index"
   }
 
   def this() = this(null, null)
