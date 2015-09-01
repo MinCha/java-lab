@@ -41,6 +41,7 @@ repositories {
 dependencies {
     compile files('riot-api-java-vayne.jar')
     compile('joda-time:joda-time:2.8.1')
+    compile('org.apache.commons:commons-math3:3.5')
     compile('com.google.code.gson:gson:2.3.1')
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
