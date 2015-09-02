@@ -2,6 +2,7 @@ package doctor.domain
 
 import doctor.IntegrationTest
 import main.java.riotapi.RiotApi
+import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation
 import org.junit.Test
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,23 +18,37 @@ class DoctorServiceTest extends IntegrationTest {
     printPretty(sut.champion("Icearrows"))
   }
 
+  @Test def canAA() {
+    println(new StandardDeviation().evaluate(Array(64, 67, 41, 34)))
+  }
+
   @Test def canHaveInsight() {
     val id = api.getSummonerByName("광견마").getId
 
-    val lines = api.getMatchList(id).getMatches.take(2).flatMap { e =>
-      api.getMatch(e.getMatchId).getParticipants.map { t =>
-        t.getTimeline
-      }
-    }.groupBy(_.getLane)
+    val matches = api.getRecentGames(id).getGames
+      .filter(_.getGameMode == "CLASSIC")
+      .filter(e => e.getGameType == "CUSTOM_GAME" || e.getGameType == "MATCHED_GAME")
+      .take(7)
+      .map(e => api.getMatch(e.getGameId)).toList
 
-    println(lines.map { e =>
+    (for (x <- matches; y <- x.getParticipants) yield (y.getTimeline))
+      .groupBy { e =>
+        if (e.getLane == "BOTTOM") {
+          if (e.getCreepsPerMinDeltas.getZeroToTen < 3) e.getLane + "_S"
+          else e.getLane + "_C"
+        } else {
+          e.getLane
+        }
+      }.map { e =>
       e._2
-      .map(_.getCsDiffPerMinDeltas)
-      .map(cs => TimelineData(e._1, cs.getZeroToTen, cs.getTenToTwenty, cs.getTwentyToThirty, cs.getThirtyToEnd))
-      .fold(TimelineData(e._1))(_
+        .map(_.getCreepsPerMinDeltas)
+        .map(cs => TimelineData(e._1, cs.getZeroToTen, cs.getTenToTwenty, cs.getTwentyToThirty, cs.getThirtyToEnd))
+        .fold(TimelineData(e._1))(_ + _)
+    }.foreach(e => println(e.g + " -> " + e.sd + " " + e.median + " " + e.toString))
+  }
 
-        + _)
-    })
+  def printTimelineDate(t: TimelineData) {
+    Log.info("%s -> SD(%1.2) MEDIAN")
   }
 
   def printPretty(d: ChampionDoctor) {

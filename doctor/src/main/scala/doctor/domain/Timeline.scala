@@ -12,4 +12,6 @@ case class TimelineData(g: String, a: Double, b: Double, c: Double, d: Double, s
   }
 
   def sd = new StandardDeviation().evaluate(Array(a, b, c, d))
+
+  def median = (a + b + c + d) / s
 }
